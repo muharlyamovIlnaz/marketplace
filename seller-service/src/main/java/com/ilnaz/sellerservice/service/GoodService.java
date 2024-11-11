@@ -2,19 +2,18 @@ package com.ilnaz.sellerservice.service;
 
 
 import com.ilnaz.sellerservice.dto.GoodDto;
-
-import java.util.List;
+import com.ilnaz.sellerservice.dto.SellerServiceResponse;
 
 public interface GoodService {
-    GoodDto createGood(GoodDto goodDto);
+    SellerServiceResponse createGood(GoodDto goodDto);
 
-    boolean deleteGood(long id);
+    SellerServiceResponse deleteGood(long id);
 
-    GoodDto getGoodById(long id);
+    SellerServiceResponse getGoodById(long id);
 
-    GoodDto updateGood(GoodDto goodDto);
+    SellerServiceResponse updateGood(GoodDto goodDto);
 
-    List<GoodDto> getAllGoods(long sellerId);
+    SellerServiceResponse getAllGoods(long sellerId);
 
-    List<GoodDto> getGoodsByGroupId(long goodCategoryId);
+    SellerServiceResponse getGoodsByGroupId(long goodCategoryId);
 }

@@ -2,6 +2,7 @@ package com.ilnaz.sellerservice.controller;
 
 
 import com.ilnaz.sellerservice.dto.GoodDto;
+import com.ilnaz.sellerservice.dto.SellerServiceResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,8 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.List;
 
 @RequestMapping("/good")
 @Tag(name = "GoodController")
@@ -50,21 +49,21 @@ public interface GoodApi {
     })
 
     @PostMapping
-    GoodDto createGood(@RequestBody GoodDto goodDto);
+    SellerServiceResponse createGood(@RequestBody GoodDto goodDto);
 
     @DeleteMapping("/{id}")
-    boolean deleteGood(@PathVariable(name = "id") long id);
+    SellerServiceResponse deleteGood(@PathVariable(name = "id") long id);
 
     @PatchMapping
-    GoodDto updateGood(@RequestBody GoodDto goodDto);
+    SellerServiceResponse updateGood(@RequestBody GoodDto goodDto);
 
     @GetMapping("/{id}")
-    GoodDto getGoodById(@PathVariable(name = "id") long id);
+    SellerServiceResponse getGoodById(@PathVariable(name = "id") long id);
 
     @GetMapping("/seller/{id}")
-    List<GoodDto> getAllGoods(@PathVariable(name = "id") long sellerId);
+    SellerServiceResponse getAllGoods(@PathVariable(name = "id") long sellerId);
 
     @GetMapping("/group/{id}")
-    List<GoodDto> getGoodsByGroupId(@PathVariable(name = "id") long goodCategoryId);
+    SellerServiceResponse getGoodsByGroupId(@PathVariable(name = "id") long goodCategoryId);
 
 }
