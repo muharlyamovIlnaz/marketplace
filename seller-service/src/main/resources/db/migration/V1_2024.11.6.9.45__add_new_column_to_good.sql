@@ -1,0 +1,1 @@
+ALTER TABLE good ADD COLUMN seller_id BIGINT NOT NULL;

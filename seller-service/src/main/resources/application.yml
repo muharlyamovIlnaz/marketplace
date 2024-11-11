@@ -1,0 +1,13 @@
+server:
+    port: 8090
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/marketplace
+    username: postgres
+    password: postgres
+    driverClassName: org.postgresql.Driver
+  jpa:
+    show-sql: true
+  flyway:
+      locations=classpath: db/migration
+      baseline-on-migrate: true
