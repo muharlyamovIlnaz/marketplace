@@ -1,0 +1,5 @@
+server:
+  port: 8080
+
+path:
+  seller-service: http://localhost:8091

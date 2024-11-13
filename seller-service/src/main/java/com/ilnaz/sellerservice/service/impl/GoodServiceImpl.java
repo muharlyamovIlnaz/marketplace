@@ -9,7 +9,6 @@ import com.ilnaz.sellerservice.repository.GoodRepository;
 import com.ilnaz.sellerservice.service.GoodService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,81 +21,62 @@ public class GoodServiceImpl implements GoodService {
     private final GoodMapper goodMapper;
 
     @Override
-    public SellerServiceResponse createGood(GoodDto goodDto) {
+    public SellerServiceResponse<GoodDto> createGood(GoodDto goodDto) {
         GoodEntity goodEntity = goodMapper.toGoodEntity(goodDto);
         goodEntity = goodRepository.save(goodEntity);
-        return getSellerServiceResponse("Good created", goodMapper.toGoodDto(goodEntity));
-
+        return SellerServiceResponse.ok("Good created", goodMapper.toGoodDto(goodEntity));
     }
 
     @Override
-    public SellerServiceResponse deleteGood(long id) {
+    public SellerServiceResponse<Void> deleteGood(long id) {
         if (!goodRepository.existsById(id)) {
-            return getSellerServiceResponse("Good by ID " + id + " was not found");
+            return SellerServiceResponse.notFoundError("Good by ID " + id + " was not found");
         }
-
         try {
             goodRepository.deleteById(id);
-            return getSellerServiceResponse("Good by ID " + id + " was deleted");
+            return SellerServiceResponse.ok("Good by ID " + id + " was deleted");
         } catch (Exception e) {
             throw new RuntimeException("Ошибка при удалении товара с ID " + id, e);
         }
     }
 
     @Override
-    public SellerServiceResponse getGoodById(long id) {
+    public SellerServiceResponse<GoodDto> getGoodById(long id) {
         GoodEntity goodEntity = goodRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Товар не найден."));
-        return SellerServiceResponse.builder()
-                .status(HttpStatus.OK.value())
-                .message("Good by " + id + " was found")
-                .body(goodMapper.toGoodDto(goodEntity)).build();
+        return SellerServiceResponse.ok("Good by " + id + " was found", goodMapper.toGoodDto(goodEntity));
     }
 
     @Override
-    public SellerServiceResponse updateGood(GoodDto goodDto) {
+    public SellerServiceResponse<GoodDto> updateGood(GoodDto goodDto) {
         GoodEntity goodEntity = goodMapper.toGoodEntity(goodDto);
-        goodRepository.save(goodEntity);
-        GoodDto goodDto1 = goodMapper.toGoodDto(goodRepository.findById(goodEntity.getId()).
-                orElseThrow(() -> new EntityNotFoundException("Товар не найден.")));
-        return getSellerServiceResponse("Good by " + goodEntity.getId() + " was update", goodDto1);
+        GoodEntity updatedEntity = goodRepository.save(goodEntity);
+        GoodDto updatedDto = goodMapper.toGoodDto(updatedEntity);
 
+        return SellerServiceResponse.ok("Good by " + updatedEntity.getId() + " was update", updatedDto);
     }
 
+
     @Override
-    public SellerServiceResponse getAllGoods(long sellerId) {
+    public SellerServiceResponse<List<GoodDto>> getAllGoods(long sellerId) {
         List<GoodEntity> allGoodEntity = goodRepository.findAllBySellerId(sellerId);
         if (allGoodEntity.isEmpty()) {
-            return getSellerServiceResponse("No goods found for seller ID " + sellerId);
+            return SellerServiceResponse.notFoundError("No goods found for seller ID " + sellerId, List.of());
         }
-        return getSellerServiceResponse("Goods by " + sellerId + " was found", allGoodEntity.stream()
+        return SellerServiceResponse.ok("Goods by " + sellerId + " was found", allGoodEntity.stream()
                 .map(goodMapper::toGoodDto)
                 .collect(Collectors.toList()));
     }
 
     @Override
-    public SellerServiceResponse getGoodsByGroupId(long goodCategoryId) {
+    public SellerServiceResponse<List<GoodDto>> getGoodsByGroupId(long goodCategoryId) {
         List<GoodEntity> allGoodEntity = goodRepository.findAllByGoodCategoryId(goodCategoryId);
         if (allGoodEntity.isEmpty()) {
-            return getSellerServiceResponse("No goods found for category ID " + goodCategoryId);
+            return SellerServiceResponse.notFoundError("No goods found for category ID " + goodCategoryId, List.of());
         }
-        return getSellerServiceResponse("Goods by groupID " + goodCategoryId + " was found", allGoodEntity.stream()
+        return SellerServiceResponse.ok("Goods by groupID " + goodCategoryId + " was found", allGoodEntity.stream()
                 .map(goodMapper::toGoodDto)
                 .collect(Collectors.toList()));
     }
 
-    private SellerServiceResponse getSellerServiceResponse(String message, Object body) {
-        return SellerServiceResponse.builder()
-                .status(HttpStatus.OK.value())
-                .message(message)
-                .body(body)
-                .build();
-    }
-
-    private SellerServiceResponse getSellerServiceResponse(String message) {
-        return SellerServiceResponse.builder()
-                .status(HttpStatus.OK.value())
-                .message(message)
-                .build();
-    }
 }

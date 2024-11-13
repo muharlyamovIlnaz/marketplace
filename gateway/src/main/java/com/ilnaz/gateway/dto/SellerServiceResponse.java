@@ -1,4 +1,4 @@
-package com.ilnaz.sellerservice.dto;
+package com.ilnaz.gateway.dto;
 
 import lombok.Builder;
 import lombok.Data;
