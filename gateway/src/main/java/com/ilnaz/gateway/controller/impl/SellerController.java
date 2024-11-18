@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/good")
 @RequiredArgsConstructor
+
 public class SellerController implements SellerControllerApi {
     private final SellerService sellerService;
 

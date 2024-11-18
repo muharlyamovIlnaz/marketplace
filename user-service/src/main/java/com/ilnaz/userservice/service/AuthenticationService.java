@@ -6,6 +6,7 @@ import com.ilnaz.userservice.dto.SignUpRequest;
 import com.ilnaz.userservice.enums.Role;
 import com.ilnaz.userservice.models.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,7 +29,7 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.valueOf(request.getRole().toUpperCase()))
                 .build();
-        
+
         userService.create(user);
         return "signUp success";
     }
@@ -45,5 +46,9 @@ public class AuthenticationService {
 
         String jwt = jwtService.generateToken(user);
         return new JwtAuthenticationResponse(jwt);
+    }
+
+    public ResponseEntity<Role> validateTokenAndGetRole(String token) {
+        return ResponseEntity.ok(Role.valueOf(jwtService.extractRole(token)));
     }
 }

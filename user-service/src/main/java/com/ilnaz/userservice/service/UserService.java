@@ -1,7 +1,7 @@
 package com.ilnaz.userservice.service;
 
 import com.ilnaz.userservice.enums.Role;
-import com.ilnaz.userservice.excrption.UserAlreadyExistsException;
+import com.ilnaz.userservice.exception.UserAlreadyExistsException;
 import com.ilnaz.userservice.models.User;
 import com.ilnaz.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,5 +1,14 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8092/validate
+    resource-id: ghb
+
 server:
   port: 8080
 
 path:
   seller-service: http://localhost:8091
+  user-service: http://localhost:8092

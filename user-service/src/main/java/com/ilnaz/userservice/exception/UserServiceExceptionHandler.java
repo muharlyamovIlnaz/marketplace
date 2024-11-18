@@ -1,4 +1,4 @@
-package com.ilnaz.userservice.excrption;
+package com.ilnaz.userservice.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

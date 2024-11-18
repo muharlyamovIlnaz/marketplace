@@ -4,6 +4,7 @@ package com.ilnaz.gateway.controller;
 import com.ilnaz.gateway.dto.GoodDto;
 import com.ilnaz.gateway.dto.SellerServiceResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,21 +19,27 @@ import java.util.List;
 @Tag(name = "SellerController")
 public interface SellerControllerApi {
 
+    @PreAuthorize("hasRole('ROLE_SELLER')")
     @PostMapping
     SellerServiceResponse<GoodDto> createGood(@RequestBody GoodDto goodDto);
 
+    @PreAuthorize("hasRole('ROLE_SELLER')")
     @PutMapping
     SellerServiceResponse<GoodDto> updateGood(@RequestBody GoodDto goodDto);
 
+    @PreAuthorize("hasRole('ROLE_SELLER')")
     @DeleteMapping("/{id}")
     SellerServiceResponse<Void> deleteGood(@PathVariable(name = "id") long id);
 
+    @PreAuthorize("hasRole('ROLE_SELLER')")
     @GetMapping("/{id}")
     SellerServiceResponse<GoodDto> getGoodById(@PathVariable(name = "id") long id);
 
+    @PreAuthorize("hasRole('ROLE_SELLER')")
     @GetMapping("/seller/{id}")
     SellerServiceResponse<List<GoodDto>> getAllGoods(@PathVariable(name = "id") long sellerId);
 
+    @PreAuthorize("hasRole('ROLE_SELLER')")
     @GetMapping("/group/{id}")
     SellerServiceResponse<List<GoodDto>> getGoodsByGroupId(@PathVariable(name = "id") long goodCategoryId);
 }
