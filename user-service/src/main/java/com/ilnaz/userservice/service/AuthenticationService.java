@@ -4,6 +4,7 @@ import com.ilnaz.userservice.dto.JwtAuthenticationResponse;
 import com.ilnaz.userservice.dto.SignInRequest;
 import com.ilnaz.userservice.dto.SignUpRequest;
 import com.ilnaz.userservice.enums.Role;
+import com.ilnaz.userservice.logging.Logging;
 import com.ilnaz.userservice.models.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
+    @Logging
     public String signUp(SignUpRequest request) {
 
         User user = User.builder()
@@ -34,6 +36,7 @@ public class AuthenticationService {
         return "signUp success";
     }
 
+    @Logging
     public JwtAuthenticationResponse signIn(SignInRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getUsername(),
@@ -48,6 +51,7 @@ public class AuthenticationService {
         return new JwtAuthenticationResponse(jwt);
     }
 
+    @Logging
     public ResponseEntity<Role> validateTokenAndGetRole(String token) {
         return ResponseEntity.ok(Role.valueOf(jwtService.extractRole(token)));
     }

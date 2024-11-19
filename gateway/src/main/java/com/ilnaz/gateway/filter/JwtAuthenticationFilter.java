@@ -27,6 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final RestTemplate restTemplate;
 
+
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,

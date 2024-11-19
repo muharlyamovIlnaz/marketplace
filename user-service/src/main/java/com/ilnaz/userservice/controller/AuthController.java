@@ -3,6 +3,7 @@ package com.ilnaz.userservice.controller;
 import com.ilnaz.userservice.dto.JwtAuthenticationResponse;
 import com.ilnaz.userservice.dto.SignInRequest;
 import com.ilnaz.userservice.dto.SignUpRequest;
+import com.ilnaz.userservice.logging.Logging;
 import com.ilnaz.userservice.service.AuthenticationService;
 import com.ilnaz.userservice.service.JwtService;
 import com.ilnaz.userservice.service.UserService;
@@ -30,18 +31,21 @@ public class AuthController {
     private final JwtService jwtService;
     private final UserService userService;
 
+    @Logging
     @Operation(summary = "Регистрация пользователя")
     @PostMapping("/sign-up")
     public String signUp(@RequestBody @Valid SignUpRequest request) {
         return authenticationService.signUp(request);
     }
 
+    @Logging
     @Operation(summary = "Авторизация пользователя")
     @PostMapping("/sign-in")
     public JwtAuthenticationResponse signIn(@RequestBody @Valid SignInRequest request) {
         return authenticationService.signIn(request);
     }
 
+    @Logging
     @Operation(summary = "Проверка валидности токена")
     @PostMapping("/validate")
     public ResponseEntity<Map<String, String>> validateToken(@RequestHeader("Authorization") String token) {
