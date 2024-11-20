@@ -3,6 +3,7 @@ package com.ilnaz.gateway.service;
 import com.ilnaz.gateway.config.ClientConfiguration;
 import com.ilnaz.gateway.dto.GoodDto;
 import com.ilnaz.gateway.dto.SellerServiceResponse;
+import com.ilnaz.gateway.logging.Logging;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -23,6 +24,7 @@ public class SellerService {
     @Value("${path.seller-service}")
     private String basePath;
 
+    @Logging
     public SellerServiceResponse<GoodDto> createGood(GoodDto goodDto) {
         RestTemplate restTemplate = clientConfiguration.getRestTemplate();
         String url = basePath + "/good";
@@ -37,6 +39,7 @@ public class SellerService {
         return response.getBody();
     }
 
+    @Logging
     public SellerServiceResponse<GoodDto> updateGood(GoodDto goodDto) {
         RestTemplate restTemplate = clientConfiguration.getRestTemplate();
         String url = basePath + "/good";
@@ -51,7 +54,7 @@ public class SellerService {
         return response.getBody();
     }
 
-
+    @Logging
     public SellerServiceResponse<Void> deleteGood(long id) {
         RestTemplate restTemplate = clientConfiguration.getRestTemplate();
         String url = basePath + "/good/" + id;
@@ -65,7 +68,7 @@ public class SellerService {
         return response.getBody();
     }
 
-
+    @Logging
     public SellerServiceResponse<GoodDto> getGoodById(long id) {
         RestTemplate restTemplate = clientConfiguration.getRestTemplate();
         String url = basePath + "/good/" + id;
@@ -79,6 +82,7 @@ public class SellerService {
         return response.getBody();
     }
 
+    @Logging
     public SellerServiceResponse<List<GoodDto>> getAllGoods(long sellerId) {
         RestTemplate restTemplate = clientConfiguration.getRestTemplate();
         String url = basePath + "/good/seller/" + sellerId;
@@ -92,6 +96,7 @@ public class SellerService {
         return response.getBody();
     }
 
+    @Logging
     public SellerServiceResponse<List<GoodDto>> getGoodsByGroupId(long goodCategoryId) {
         RestTemplate restTemplate = clientConfiguration.getRestTemplate();
         String url = basePath + "/good/group/" + goodCategoryId;

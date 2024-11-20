@@ -1,5 +1,6 @@
 package com.ilnaz.userservice.service;
 
+import com.ilnaz.userservice.logging.Logging;
 import com.ilnaz.userservice.models.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -25,6 +26,7 @@ public class JwtService {
     @Value("${jwt.expirationTime}")
     private long expirationTime;
 
+    @Logging
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         if (userDetails instanceof User customUserDetails) {
@@ -35,6 +37,7 @@ public class JwtService {
         return generateToken(claims, userDetails);
     }
 
+    @Logging
     public boolean isTokenValid(String token) {
         try {
             extractAllClaims(token);
@@ -44,8 +47,14 @@ public class JwtService {
         }
     }
 
+    @Logging
     public String extractRole(String token) {
         return extractClaim(token, claims -> claims.get("role", String.class));
+    }
+
+    @Logging
+    public String extractUserName(String token) {
+        return extractClaim(token, Claims::getSubject);
     }
 
     private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
@@ -61,10 +70,6 @@ public class JwtService {
 
     private Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
-    }
-
-    public String extractUserName(String token) {
-        return extractClaim(token, Claims::getSubject);
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
